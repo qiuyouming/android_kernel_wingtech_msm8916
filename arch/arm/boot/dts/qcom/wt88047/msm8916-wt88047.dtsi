@@ -83,7 +83,8 @@
 				<&dai_mi2s0>, <&dai_mi2s1>, <&dai_mi2s2>, <&dai_mi2s3>,
 				<&sb_0_rx>, <&sb_0_tx>, <&sb_1_rx>, <&sb_1_tx>,
 				<&sb_3_rx>, <&sb_3_tx>, <&sb_4_rx>, <&sb_4_tx>,
-				<&bt_sco_rx>, <&bt_sco_tx>, <&int_fm_rx>, <&int_fm_tx>,
+				<&bt_sco_rx>, <&bt_sco_tx>, <&bt_a2dp_rx>,
+				<&int_fm_rx>, <&int_fm_tx>,
 				<&afe_pcm_rx>, <&afe_pcm_tx>, <&afe_proxy_rx>, <&afe_proxy_tx>,
 				<&incall_record_rx>, <&incall_record_tx>, <&incall_music_rx>,
 				<&incall_music_2_rx>;
@@ -95,11 +96,12 @@
 				"msm-dai-q6-dev.16390", "msm-dai-q6-dev.16391",
 				"msm-dai-q6-dev.16392", "msm-dai-q6-dev.16393",
 				"msm-dai-q6-dev.12288", "msm-dai-q6-dev.12289",
-				"msm-dai-q6-dev.12292", "msm-dai-q6-dev.12293",
-				"msm-dai-q6-dev.224", "msm-dai-q6-dev.225",
-				"msm-dai-q6-dev.241", "msm-dai-q6-dev.240",
-				"msm-dai-q6-dev.32771", "msm-dai-q6-dev.32772",
-				"msm-dai-q6-dev.32773", "msm-dai-q6-dev.32770";
+				"msm-dai-q6-dev.12290", "msm-dai-q6-dev.12292",
+				"msm-dai-q6-dev.12293",	"msm-dai-q6-dev.224",
+				"msm-dai-q6-dev.225", "msm-dai-q6-dev.241",
+				"msm-dai-q6-dev.240", "msm-dai-q6-dev.32771",
+				"msm-dai-q6-dev.32772", "msm-dai-q6-dev.32773",
+				"msm-dai-q6-dev.32770";
 		asoc-codec = <&stub_codec>, <&pm8916_tombak_dig>;
 		asoc-codec-names = "msm-stub-codec.1", "tombak_codec";
 	};
@@ -217,16 +219,16 @@
 };
 
 &tlmm_pinmux {
-	ltr553_int_pin {
+	ltr559_int_pin {
 		qcom,pins = <&gp 113>;
 		qcom,pin-func = <0>;
 		qcom,num-grp-pins = <1>;
-		label = "ltr553-irq";
-		ltr553_default: ltr553_default {
+		label = "ltr559-irq";
+		ltr559_default: ltr559_default {
 			drive-strength = <6>;
 			bias-pull-up;
 		};
-		ltr553_sleep: ltr553_sleep {
+		ltr559_sleep: ltr559_sleep {
 			drive-strength = <2>;
 			bias-pull-down;
 		};
@@ -255,25 +257,19 @@
 
 &i2c_0 { /* BLSP1 QUP2 */
 	liteon@23 {
-		compatible = "liteon,ltr553";
+		compatible = "ltr,ltr559";
 		reg = <0x23>;
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&ltr559_default>;
+		pinctrl-1 = <&ltr559_sleep>;
+		interrupt-parent = <&msm_gpio>;
+		interrupts = <113 0x2>;
 		vdd-supply = <&pm8916_l17>;
 		vio-supply = <&pm8916_l6>;
-		interrupt-parent = <&msm_gpio>;
-		interrupts = <113 0x2002>;
-		pinctrl-names = "default","sleep";
-		pinctrl-0 = <&ltr553_default>;
-		pinctrl-1 = <&ltr553_sleep>;
-		liteon,irq-gpio = <&msm_gpio 113 0x2002>;
-		liteon,als-ps-persist = <0>;
-		liteon,ps-led = <0x7f>;
-		liteon,ps-pulses = <4>;
-		liteon,wakeup-threshold = <4>;
-		liteon,als-integration-time = <0>;
-		liteon,als-equation-0 = <1 1 7743 1059 600 1>;
-		liteon,als-equation-1 = <4 1 2785 696 240 (-1)>;
-		liteon,als-equation-2 = <0 0 5926 1300 44 1>;
-		liteon,als-equation-3 = <0 0 0 0 1 1>;
+		ltr,irq-gpio = <&msm_gpio 113 0x2>;
+		ltr,ps-threshold = <45>;
+		ltr,ps-hysteresis-threshold = <30>;
+		ltr,als-polling-time = <200>;
 	};
 
 	mpu6050@68 {
