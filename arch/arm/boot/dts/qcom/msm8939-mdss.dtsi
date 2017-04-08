@@ -1,4 +1,4 @@
-/* Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2014-2016, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -37,7 +37,7 @@
 		qcom,max-bandwidth-low-kbps = <2500000>;
 		qcom,max-bandwidth-high-kbps = <2500000>;
 		qcom,max-bandwidth-per-pipe-kbps = <1 2100000>,	/* Default */
-						   <2 1500000>;	/* Camera */
+                                                   <2 1500000>;	/* Camera */
 
 		/* Bandwidth limit settings */
 		qcom,max-bw-settings =	<1 2500000>,	/* Default */
